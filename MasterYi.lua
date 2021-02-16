@@ -21,8 +21,8 @@ end
 
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
-        --pred speed, travel range, width, cast time
-        local pred_pos = target:get_predicted_position( Local_hero:get_position() , 1800, 1100, 130, 0.25 )
+        --pred speed, range, width, cast time
+        local pred_pos = target:get_predicted_position( Local_hero:get_position() , 10000, 600, 500, 0 )
         if pred_pos:length() > 1 and not collision.is_minion_in_line( pred_pos, 130 ) then
             input.send_spell( spell_slot_t.q , pred_pos )
             Spell_limiter_q = globals.get_game_time() + 0.5
