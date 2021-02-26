@@ -114,7 +114,7 @@ local function Draw()
     myPosString = tostring(Local_hero:get_position())
     -- example usage
     --render.text( vec2:new( 100, 100 ), "im a text", 32, color:new( 255, 255, 255 ) )
-    render.text(vec2:new( 100, 100 ), myPosString, 32, color:new( 255, 255, 255 ) )
+    --render.text(vec2:new( 100, 100 ), myPosString, 32, color:new( 255, 255, 255 ) )
     if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , 850, color:new( 0,125,255, 100 ) ) end
     if Local_hero:get_mana() > max_mana then max_mana = Local_hero:get_mana() return end
 end
