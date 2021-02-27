@@ -8,8 +8,6 @@ local function Initialize_menu()
     Menu.combo_mana_q = menu.slider_int( "Mana Q", 0, 100, 10)
     Menu.combo_use_w = menu.checkbox("Use W", true)
     Menu.combo_mana_w = menu.slider_int( "Mana W", 0, 100, 10)
-    Menu.combo_use_r = menu.checkbox("Use R", true)
-    Menu.combo_mana_r = menu.slider_int( "Mana R", 0, 100, 10)
    
     menu.label("Mixed")
     Menu.mixed_use_q = menu.checkbox("Use Q", true)
