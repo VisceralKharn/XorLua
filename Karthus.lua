@@ -21,7 +21,7 @@ end
 
 local function Init()
     Spell_limiter_q, Spell_limiter_w, Spell_limiter_e, Spell_limiter_r, max_mana  = 0,0,0,0,0
-    qSpeed = 330
+    qSpeed = 1000
     qRange = 875
     qSize = 150
     Initialize_menu()

@@ -74,26 +74,42 @@ local function Use_R(target)
     end
 end
 
+local min = math.min
 
---local function Mixed()
---    enemyTable = object_manager.get_valid_enemy_heroes()
---    for i,e in ipairs(enemyTable) do 
---        if (Local_hero:get_position() - e:get_position()):length() <= qRange then 
---            --render.text(vec2:new(200,200), tostring((Local_hero:get_position() - e:get_position()):length()),32,color:new( 255, 255, 255 ) ) end
---            local target = e
---            if Menu.mixed_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.mixed_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
---        end
---    end
---end
+local function GetEnemies()
+    enemyTable = object_manager.get_valid_enemy_heroes()
+    --enemyHpTable = {}
+    eTargetHp = 50000
+    eTarget = '0'
+    for i,e in ipairs(enemyTable) do 
+        if (Local_hero:get_position() - e:get_position()):length() <= qRange then 
+              if e:get_health() < eTargetHp then
+                eTargetHp = e:get_health()
+                eTarget = e
+              end
+            --enemyHpTable[i] = e:get_health()
+            --render.text(vec2:new( 100, 100 ), tostring(e:get_health()), 32, color:new( 255, 255, 255 ) )
+        end
+    end
+    --target = min(unpack(enemyHpTable))
+    --table.sort(enemyHpTable)
+    return eTarget
+    --render.text(vec2:new( 100, 100 ), tostring(enemyHpTable[#enemyHpTable]), 32, color:new( 255, 255, 255 ) )
+end
 
 
 local function Combo()
-    local orbwalker_target = orbwalker.get_target()
+    --local orbwalker_target = orbwalker.get_target()
+    local orbwalker_target = GetEnemies()
+    render.text(vec2:new( 100, 100 ), tostring(orbwalker_target), 32, color:new( 255, 255, 255 ) )
     if orbwalker_target ~= -1 then
-        local target = object_manager.get_by_index( orbwalker_target )
+        --local target = object_manager.get_by_index( orbwalker_target )
         if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
+        
         if Menu.combo_use_w:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_w:get_value()/100) and Local_hero:get_mana() > 40 then Use_W(target) end
+        
         if Menu.combo_use_r:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_r:get_value()/100) and Local_hero:get_mana() > 40 then Use_R(target) end
+        
     end
 end
 
