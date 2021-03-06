@@ -6,10 +6,6 @@ local function Initialize_menu()
     menu.label("Combo")
     Menu.combo_use_q = menu.checkbox("Use Q", true)
     Menu.combo_mana_q = menu.slider_int( "Mana Q", 0, 100, 10)
-    Menu.combo_use_w = menu.checkbox("Use W", true)
-    Menu.combo_mana_w = menu.slider_int( "Mana W", 0, 100, 10)
-    Menu.combo_use_e = menu.checkbox("Use E", true)
-    Menu.combo_mana_e = menu.slider_int( "Mana E", 0, 100, 10)
 
     menu.label("Mixed")
     Menu.mixed_use_q = menu.checkbox("Use Q", true)
@@ -58,7 +54,7 @@ local function Draw()
     myPosString = tostring(Local_hero:get_position())
     -- example usage
     --render.text( vec2:new( 100, 100 ), "im a text", 32, color:new( 255, 255, 255 ) )
-    render.text(vec2:new( 100, 100 ), myPosString, 32, color:new( 255, 255, 255 ) )
+    --render.text(vec2:new( 100, 100 ), myPosString, 32, color:new( 255, 255, 255 ) )
     if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , 1100, color:new( 0,125,255, 100 ) ) end
     if Local_hero:get_mana() > max_mana then max_mana = Local_hero:get_mana() return end
 end
