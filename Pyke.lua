@@ -1,7 +1,7 @@
 
 local function Initialize_menu()
     Menu = {}
-    menu.label("Amumu");
+    menu.label("Pyke");
 
     menu.label("Combo")
     Menu.combo_use_q = menu.checkbox("Use Q", true)
@@ -13,6 +13,17 @@ local function Initialize_menu()
 
 end
 
+--Spells
+qSpeed = 3000
+qRange = 600
+qWidth = 124
+wSpeed = 1000
+wRange = 300
+wWidth = 120
+rSpeed = 2000
+rRange = 500
+rWidth = 100
+
 local function Init()
     Spell_limiter_q, Spell_limiter_w, Spell_limiter_e, Spell_limiter_r, max_mana  = 0,0,0,0,0
 
@@ -22,8 +33,8 @@ end
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
         --pred speed, travel range, width, cast time
-        local pred_pos = target:get_predicted_position( Local_hero:get_position() , 1800, 1080, 160, 0.25 )
-        if pred_pos:length() > 1 and not collision.is_minion_in_line( pred_pos, 160 ) then
+        local pred_pos = target:get_predicted_position( Local_hero:get_position() , 1200, 1250, 140, 0.25 )
+        if pred_pos:length() > 1 and not collision.is_minion_in_line( pred_pos, 200 ) then
             input.send_spell( spell_slot_t.q , pred_pos )
             Spell_limiter_q = globals.get_game_time() + 0.5
         end
@@ -35,7 +46,7 @@ end
 
 local function Combo()
     local orbwalker_target = orbwalker.get_target()
-    if orbwalker_target ~= nil  then
+    if orbwalker_target ~= nil then
         local target = object_manager.get_by_index( orbwalker_target )
         if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
     end
