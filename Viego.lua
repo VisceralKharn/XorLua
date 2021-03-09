@@ -16,6 +16,7 @@ local function Initialize_menu()
 end
 
 allObjects = object_manager.get_valid_objects()
+towers = object_manager.get_by_flag(object_t.turret) 
 --Spells
 qSpeed = 3000
 qRange = 600
@@ -82,11 +83,11 @@ local function Draw()
 
     if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , qRange, color:new( 0,125,255, 100 ) ) end
 
-    --for i,v in ipairs(allObjects) do
-    --    --if string.find(v:get_name(),'turret') then print(v:get_name())  end
-    --    
-    --    --if v:get_attack_range() > 0 then render.circle_3d(v:get_position(), v:get_attack_range(), color:new( 255, 255, 255 )) end
-    --end
+    for i,v in ipairs(towers) do
+        tPos = v:get_position()
+        --tRange = v:get_attack_range()
+        render.circle_3d( tPos , 750, color:new( 0,125,255, 100 ) )
+    end   
 end
 
 local function Tick()
