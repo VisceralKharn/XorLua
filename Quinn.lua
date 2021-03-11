@@ -8,6 +8,7 @@ local function Initialize_menu()
     --Menu.combo_mana_q = menu.slider_int( "Mana Q", 0, 100, 10)
     Menu.combo_use_w = menu.checkbox("Use W", true)
     --Menu.combo_mana_w = menu.slider_int( "Mana W", 0, 100, 10)
+    Menu.combo_range_e = menu.slider_int( "Range E", 0, 600, 10)
 
 
     menu.label("Draw")
@@ -21,12 +22,6 @@ towers = object_manager.get_by_flag(object_t.turret)
 qSpeed = 3000
 qRange = 1000
 qWidth = 120
-wSpeed = 1000
-wRange = 300
-wWidth = 120
-rSpeed = 2000
-rRange = 500
-rWidth = 100
 
 local function Init()
     Spell_limiter_q, Spell_limiter_w, Spell_limiter_e, Spell_limiter_r = 0,0,0,0
@@ -40,6 +35,17 @@ local function Use_Q(target)
         if pred_pos:length() > 1 and not collision.is_minion_in_line( pred_pos, qWidth ) then  then
             input.send_spell( spell_slot_t.q , pred_pos )
             Spell_limiter_q = globals.get_game_time() + 0.5
+        end
+    end
+end
+
+local function Use_E(target)
+    if Local_spellbook:get_spell_slot( spell_slot_t.e ):is_ready() and globals.get_game_time() > Spell_limiter_e then
+        --pred speed, travel range, width, cast time
+        local pred_pos = target:get_position()
+        if pred_pos:length() > 1 and (Local_hero:get_position() - pred_pos):length() <= Menu.combo_range_e then
+            input.send_spell( spell_slot_t.e , pred_pos )
+            Spell_limiter_e = globals.get_game_time() + 0.5
         end
     end
 end
