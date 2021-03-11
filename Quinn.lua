@@ -1,7 +1,7 @@
 
 local function Initialize_menu()
     Menu = {}
-    menu.label("Viego");
+    menu.label("Quinn");
 
     menu.label("Combo")
     Menu.combo_use_q = menu.checkbox("Use Q", true)
