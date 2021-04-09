@@ -21,11 +21,13 @@ local function Init()
     Initialize_menu()
 end
 
+qRange = 600
+
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
         --pred speed, range, width, cast time
         local pred_pos = target:get_position()
-        if pred_pos:length() > 1 then
+        if Local_hero:get_position() - pred_pos):length() <= qRange then
             input.send_spell( spell_slot_t.q , pred_pos )
             Spell_limiter_q = globals.get_game_time() + 0.5
         end
@@ -38,6 +40,7 @@ end
       --  Spell_limiter_e = globals.get_game_time() + 0.5
     --end
 --end
+
 
 
 
@@ -55,7 +58,7 @@ local function Draw()
     Local_hero = object_manager.get_local()
     Local_spellbook = Local_hero:get_spell_book()
 
-    if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , 600, color:new( 0,125,255, 100 ) ) end
+    if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , qRange, color:new( 0,125,255, 100 ) ) end
 
     if Local_hero:get_mana() > max_mana then max_mana = Local_hero:get_mana() return end
 end
