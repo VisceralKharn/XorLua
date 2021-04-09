@@ -65,13 +65,6 @@ local function Combo()
     end
 end
 
-local function Jungle()
-    local orbwalker_target = orbwalker.get_target()
-    if orbwalker_target ~= nil then
-        local target = object_manager.get_by_index( orbwalker_target )
-        Use_Q(target)
-    end
-end
 
 local function Draw()
     Local_hero = object_manager.get_local()
@@ -88,8 +81,7 @@ local function Draw()
 end
 
 local function Tick()
-    if input.is_key_down(67) then Combo() return end
-    if input.is_key_down(86) then Jungle() return end
+    if input.is_key_down(32) then Combo() return end
 end
 
 Init()
