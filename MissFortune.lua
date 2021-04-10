@@ -24,6 +24,7 @@ local function Init()
 end
 
 qRange = 550
+eRange = 1000
 
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
@@ -51,8 +52,8 @@ end
 local function Use_E(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.e ):is_ready() and globals.get_game_time() > Spell_limiter_e then
         --pred speed, range, width, cast time
-        local pred_pos = target:get_predicted_position( Local_hero:get_position() , 10000, 1000, 200, 0 )
-        if pred_pos:length() > 1 then
+        local pred_pos = target:get_position()
+        if (Local_hero:get_position() - pred_pos):length() <= qRange then
             input.send_spell( spell_slot_t.e , pred_pos )
             Spell_limiter_e = globals.get_game_time() + 0.5
         end
