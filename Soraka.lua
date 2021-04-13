@@ -23,8 +23,7 @@ local function Init()
     Initialize_menu()
 end
 
-qRange = 550
-eRange = 1000
+qRange = 800
 
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
@@ -37,35 +36,8 @@ local function Use_Q(target)
     end
 end
 
-local function Use_W(target)
-    if Local_spellbook:get_spell_slot( spell_slot_t.w ):is_ready() and globals.get_game_time() > Spell_limiter_w then
-        --pred speed, range, width, cast time
-        local pred_pos = (target:get_position() - (Local_hero:get_position())):length()
-        if pred_pos <= 550 then
-            input.send_spell( spell_slot_t.w)
-            Spell_limiter_e = globals.get_game_time() + 0.5
-        end
-    end
-end
 
 
-local function Use_E(target)
-    if Local_spellbook:get_spell_slot( spell_slot_t.e ):is_ready() and globals.get_game_time() > Spell_limiter_e then
-        --pred speed, range, width, cast time
-        local pred_pos = target:get_position()
-        if (Local_hero:get_position() - pred_pos):length() <= eRange then
-            input.send_spell( spell_slot_t.e , pred_pos )
-            Spell_limiter_e = globals.get_game_time() + 0.5
-        end
-    end
-end
-
---local function Use_E():
-  --  if Local_spellbook:get_spell_slot(spell_slot_t.e):is_ready() and globals.get_game_time() > Spell_limiter_e then
-    --    input.send_spell(spell_slot_t.e)
-      --  Spell_limiter_e = globals.get_game_time() + 0.5
-    --end
---end
 
 
 
@@ -74,8 +46,6 @@ local function Combo()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index( orbwalker_target )
         if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
-        if Menu.combo_use_w:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_w:get_value()/100) and Local_hero:get_mana() > 40 then Use_W(target) end
-        if Menu.combo_use_e:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_e:get_value()/100) and Local_hero:get_mana() > 40 then Use_E(target) end
     end
 end
 
