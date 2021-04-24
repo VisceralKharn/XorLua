@@ -68,34 +68,11 @@ local function Combo()
     end
 end
 
-local function Jungle()
-    local orbwalker_target = orbwalker.get_target()
-    if orbwalker_target ~= nil then
-        local target = object_manager.get_by_index( orbwalker_target )
-        Use_Q(target)
-    end
-end
-
-local function Draw()
-    Local_hero = object_manager.get_local()
-    Local_spellbook = Local_hero:get_spell_book()
-    
-
-    if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , qRange, color:new( 0,125,255, 100 ) ) end
-
-    for i,v in ipairs(towers) do
-        tPos = v:get_position()
-        --tRange = v:get_attack_range()
-        render.circle_3d( tPos , 750, color:new( 0,125,255, 100 ) )
-    end   
-end
 
 local function Tick()
-    if input.is_key_down(67) then Combo() return end
-    if input.is_key_down(86) then Jungle() return end
+    if input.is_key_down(32) then Combo() return end
 end
 
 Init()
 register_callback( "draw", Tick )
-register_callback( "draw", Draw )
 

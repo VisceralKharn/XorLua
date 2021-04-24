@@ -46,7 +46,7 @@ end
 
 local function Combo()
     local orbwalker_target = orbwalker.get_target()
-    if orbwalker_target ~= -1 then
+    if orbwalker_target ~= nil then
         local target = object_manager.get_by_index( orbwalker_target )
         if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
       --  if Menu.combo_use_e:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_e:get_value()/100) and Local_hero:get_mana() > 40 then Use_E() end
