@@ -31,17 +31,17 @@ eSpeed = 1200
 eRange = 950
 eSize = 200
 
-local function Use_Q(target)
-    if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
-        --pred speed, range, width, cast time
-        local pred_pos = target:get_position()
-        local myPos = Local_hero:get_position()
-        if (myPos - pred_pos):length() <= qRange then
-            input.send_spell( spell_slot_t.q , myPos )
-            Spell_limiter_q = globals.get_game_time() + 0.5
-        end
-    end
-end
+--local function Use_Q(target)
+--    if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
+--        --pred speed, range, width, cast time
+--        local pred_pos = target:get_position()
+--        local myPos = Local_hero:get_position()
+--        if (myPos - pred_pos):length() <= qRange then
+--            input.send_spell( spell_slot_t.q , myPos )
+--            Spell_limiter_q = globals.get_game_time() + 0.5
+--        end
+--    end
+--end
 
 local function Use_W(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.w ):is_ready() and globals.get_game_time() > Spell_limiter_w then
@@ -68,7 +68,8 @@ local function Combo()
     local orbwalker_target = orbwalker.get_target()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index( orbwalker_target )
-        if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
+        if Menu.combo_use_w:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_w:get_value()/100) and Local_hero:get_mana() > 40 then Use_W(target) end
+        if Menu.combo_use_e:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_e:get_value()/100) and Local_hero:get_mana() > 40 then Use_E(target) end
     end
 end
 

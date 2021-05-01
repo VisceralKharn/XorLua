@@ -10,7 +10,7 @@ local function Initialize_menu()
     Menu.combo_mana_w = menu.slider_int( "Mana W", 0, 100, 10)
     Menu.combo_use_e = menu.checkbox("Use E", true)
     Menu.combo_mana_e = menu.slider_int( "Mana E", 0, 100, 10)
-
+    
 
     menu.label("Draw")
     Menu.draw_q = menu.checkbox("Draw Q range", true)
@@ -25,6 +25,9 @@ end
 
 qRange = 550
 eRange = 1000
+
+spells = evade.get_active_spells()
+
 
 local function Use_Q(target)
     if Local_spellbook:get_spell_slot( spell_slot_t.q ):is_ready() and globals.get_game_time() > Spell_limiter_q then
@@ -83,9 +86,7 @@ end
 local function Draw()
     Local_hero = object_manager.get_local()
     Local_spellbook = Local_hero:get_spell_book()
-
     if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , 550, color:new( 0,125,255, 100 ) ) end
-
     if Local_hero:get_mana() > max_mana then max_mana = Local_hero:get_mana() return end
 end
 
@@ -93,6 +94,11 @@ local function Tick()
     if input.is_key_down(32) then Combo() return end
 end
 
+local function print()
+    if input.is_key_down(67) then render.text( vec2:new( 100, 100 ), tostring(spells), 32, color:new( 255, 255, 255 ) ) end
+end
+
 Init()
+register_callback( "draw", print )
 register_callback( "draw", Tick )
 register_callback( "draw", Draw )

@@ -8,6 +8,7 @@ local function Init()
     spellbook = myHero:get_spell_book()
     smiteSlot = spellbook:get_spell_slot_by_name('SummonerSmite')
     Initialize_menu()
+    SmiteTargets()
 end
 
 local function GetSmiteDps()
@@ -45,31 +46,49 @@ function MyHero_DistTo(point)
 end
 
 --Filter minions to jungle mobs done by Nenny
-function smite()
-    GetSmiteDps()
-        print(smiteDPS)
-    if smiteSlot:is_ready() then
-        print(smiteSlot:get_name())
-        local  minions = object_manager.get_by_flag(object_t.minion) 
-            for i,v in ipairs(minions) do
-                local buffManager = v:get_buff_manager()
-                --(Local_hero:get_position() - pred_pos):length()
-                    if (buffManager:has_buff("resistantskindragon") or buffManager:has_buff("resistantskinminibaron") or buffManager:has_buff("resistantskin") or test2(v:get_name())) and v:is_alive() and v:is_valid() then 
-                        local jgPos = v:get_position()
-                        if MyHero_DistTo(jgPos) <= 1100 then
-                            if v:get_health() <= smiteDPS then
-                                print(v:get_health())
-                                input.send_spell( spell_slot_t.d , jgPos )
-                            end
-                        end
-                    end
-            end 
-    end    
+function SmiteTargets()
+    jgMinions = {}
+    local  minions = object_manager.get_by_flag(object_t.minion) 
+        for i,v in ipairs(minions) do
+            local buffManager = v:get_buff_manager()
+                if buffManager:has_buff("resistantskindragon") or buffManager:has_buff("resistantskinminibaron") or buffManager:has_buff("resistantskin") or test2(v:get_name()) then
+                    print(v:get_name())                                              
+                    table.insert(jgMinions, v)
+                end
+        end 
 end
 
+function Smite()
+    SmiteTargets()
+-- v:is_alive() and v:is_valid()
+    if smiteSlot:is_ready() then
+        for i,v in ipairs(jgMinions) do
+            if v:is_alive() and v:is_valid() then
+                local jgPos = v:get_position()
+                if MyHero_DistTo(jgPos) <= 1100 then
+                    GetSmiteDps()
+                    if v:get_health() <= smiteDPS then
+                        print('ready')
+                        input.send_spell( smiteSlot , jgPos )
+                        input.send_key_down(68)
+                    end 
+                end
+            end
+        end
+    end
+end
+--
 local function Tick()
-    if input.is_key_down(16) then smite() return end
+    if input.is_key_down(16) then 
+        Smite() 
+        return 
+    end
+end
+
+local function printResults()
+    if input.is_key_down(35) then for i,v in pairs(jgMinions) do print(v) end end
 end
 
 Init()
+register_callback( "draw", printResults )
 register_callback( "draw", Tick )
