@@ -7,6 +7,7 @@ local function Init()
     myHero = object_manager:get_local()
     spellbook = myHero:get_spell_book()
     smiteSlot = spellbook:get_spell_slot_by_name('SummonerSmite')
+    x = 2
     Initialize_menu()
     SmiteTargets()
 end
@@ -59,18 +60,22 @@ function SmiteTargets()
 end
 
 function Smite()
-    SmiteTargets()
+    if x > 1 then 
+        SmiteTargets()
+    end
 -- v:is_alive() and v:is_valid()
     if smiteSlot:is_ready() then
         for i,v in ipairs(jgMinions) do
             if v:is_alive() and v:is_valid() then
                 local jgPos = v:get_position()
                 if MyHero_DistTo(jgPos) <= 1100 then
+                    x = 1
                     GetSmiteDps()
                     if v:get_health() <= smiteDPS then
                         print('ready')
                         input.send_spell( smiteSlot , jgPos )
                         input.send_key_down(68)
+                        x = 2
                     end 
                 end
             end
