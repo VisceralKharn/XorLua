@@ -9,7 +9,7 @@ local function Init()
     smiteSlot = spellbook:get_spell_slot_by_name('SummonerSmite')
     x = 2
     Initialize_menu()
-    SmiteTargets()
+    
 end
 
 local function GetSmiteDps()
@@ -52,8 +52,7 @@ function SmiteTargets()
     local  minions = object_manager.get_by_flag(object_t.minion) 
         for i,v in ipairs(minions) do
             local buffManager = v:get_buff_manager()
-                if buffManager:has_buff("resistantskindragon") or buffManager:has_buff("resistantskinminibaron") or buffManager:has_buff("resistantskin") or test2(v:get_name()) then
-                    print(v:get_name())                                              
+                if buffManager:has_buff("resistantskindragon") or buffManager:has_buff("resistantskinminibaron") or buffManager:has_buff("resistantskin") or test2(v:get_name()) then                                            
                     table.insert(jgMinions, v)
                 end
         end 
@@ -64,15 +63,13 @@ function Smite()
     if smiteSlot:is_ready() then
         for i,v in ipairs(jgMinions) do
                 local jgPos = v:get_position()
-                if MyHero_DistTo(jgPos) <= 1100 then
+                if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 1100 then
                         GetSmiteDps()
-                        while v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 1100 do
                             if v:get_health() <= smiteDPS then
                                 input.send_spell( smiteSlot , jgPos )
+                                --input.set_cursor_position(jgPos)
                                 input.send_key_down(68)
-                            end
-                        end 
-                    
+                            end 
                 end
         end
     end
