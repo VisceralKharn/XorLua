@@ -66,20 +66,21 @@ function Smite()
 -- v:is_alive() and v:is_valid()
     if smiteSlot:is_ready() then
         for i,v in ipairs(jgMinions) do
-            if v:is_alive() and v:is_valid() then
                 local jgPos = v:get_position()
                 if MyHero_DistTo(jgPos) <= 1100 then
-                    x = 1
-                    GetSmiteDps()
-                    while x = 1 do
-                        if v:get_health() <= smiteDPS then
-                            input.send_spell( smiteSlot , jgPos )
-                            input.send_key_down(68)
-                            x = 2
-                        end
-                    end 
+                        x = 1
+                        GetSmiteDps()
+                        while x = 1 do
+                            if v:get_health() <= smiteDPS and v:is_alive() and v:is_valid() then
+                                input.send_spell( smiteSlot , jgPos )
+                                input.send_key_down(68)
+                                x = 2
+                            else
+                                x = 2
+                            end
+                        end 
+                    
                 end
-            end
         end
     end
 end
