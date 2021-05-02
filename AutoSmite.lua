@@ -71,11 +71,12 @@ function Smite()
                 if MyHero_DistTo(jgPos) <= 1100 then
                     x = 1
                     GetSmiteDps()
-                    if v:get_health() <= smiteDPS then
-                        print('ready')
-                        input.send_spell( smiteSlot , jgPos )
-                        input.send_key_down(68)
-                        x = 2
+                    while x = 1 do
+                        if v:get_health() <= smiteDPS then
+                            input.send_spell( smiteSlot , jgPos )
+                            input.send_key_down(68)
+                            x = 2
+                        end
                     end 
                 end
             end
