@@ -68,13 +68,11 @@ function Smite()
         for i,v in ipairs(jgMinions) do
                 local jgPos = v:get_position()
                 if MyHero_DistTo(jgPos) <= 1100 then
-                        x = 1
                         GetSmiteDps()
-                        while x = 1 do
+                        while v:is_alive() and v:is_valid() do
                             if v:get_health() <= smiteDPS and v:is_alive() and v:is_valid() then
                                 input.send_spell( smiteSlot , jgPos )
                                 input.send_key_down(68)
-                                x = 2
                             else
                                 x = 2
                             end
