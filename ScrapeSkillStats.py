@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun May  2 18:14:57 2021
-
-@author: marka
 """
 
 from bs4 import BeautifulSoup
