@@ -7,6 +7,7 @@ Created on Sun May  2 18:14:57 2021
 
 from bs4 import BeautifulSoup
 import requests
+import json
 
 baseUrl = 'https://www.lolskill.net/champions'
 
@@ -42,5 +43,7 @@ for champ in champsList:
             else:
                 abilityRange = 0
             abilitiesDict[abilityName] = abilityRange   
-            
+
+with open('abilityRanges.txt','w') as f:
+    f.write(json.dumps(abilitiesDict))
                     
