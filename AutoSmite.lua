@@ -68,7 +68,7 @@ function Smite()
                             if v:get_health() <= smiteDPS then
                                 input.send_spell( smiteSlot , jgPos )
                                 --input.set_cursor_position(jgPos)
-                                input.send_key_down(68)
+                                --input.send_key_down(68)
                             end 
                 end
         end
