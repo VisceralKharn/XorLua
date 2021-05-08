@@ -1,7 +1,3 @@
-local myHero = object_manager:get_local()
-local spellbook = myHero:get_spell_book()
-local qRange = 625
-
 local function Initialize_menu()
     Menu = {}
     menu.label("Gangplank");
@@ -9,6 +5,9 @@ end
 
 local function Init()
     Spell_limiter_q, Spell_limiter_w, Spell_limiter_e, Spell_limiter_r  = 0,0,0,0
+    myHero = object_manager:get_local()
+    spellbook = myHero:get_spell_book()
+    qRange = 625
     Initialize_menu() 
 end
 
