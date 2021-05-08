@@ -29,7 +29,7 @@ end
 
 
 local function qLastHitPos()
-    if spellbook:get_spell_slot( spell_slot_t.q ) then
+    if spellbook:get_spell_slot( spell_slot_t.q ):is_ready() then
         for i,v in ipairs(getMinions(qRange)) do
             if v:is_alive() and v:is_valid() and getQDamage(v) ~= 'unknown' then
                 if v:get_health() <= getQDamage(v) then
