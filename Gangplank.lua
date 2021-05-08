@@ -16,29 +16,6 @@ function myHeroDistTo(position)
     return (myHero:get_position() - position):length()
 end
 
-local function getMinions(range)
-    minionsTable = {}
-    local minions = object_manager.get_by_flag(object_t.minion)
-        for i,v in ipairs(minions) do
-            if myHeroDistTo(v:get_position()) <= range then
-                table.insert(minionsTable, v)
-            end
-        end
-    return minionsTable
-end
-
-
-local function qLastHitPos()
-    if spellbook:get_spell_slot( spell_slot_t.q ):is_ready() then
-        for i,v in ipairs(getMinions(qRange)) do
-            if v:is_alive() and v:is_valid() and getQDamage(v) ~= 'unknown' then
-                if v:get_health() <= getQDamage(v) then
-                    return v:get_position()
-                end
-            end
-        end
-    end
-end
 
 local function getQDamage(target)
     local myDmg = myHero:get_attack_damage()
@@ -48,10 +25,46 @@ local function getQDamage(target)
     return ((((qSpellLvl - 1)*25) + qBase) + myDmg) * ( 100 / ( 100 + target:get_armor()))
 end
 
+local function getMinions(range)
+    minionsTable = {}
+    local minions = object_manager.get_by_flag(object_t.minion)
+        for i,v in ipairs(minions) do
+            if myHeroDistTo(v:get_position()) <= range and v:get_name() ~= 'Barrel' then
+                table.insert(minionsTable, v)
+            end
+        end
+    return minionsTable
+end
+
+local function getBarrels()
+    barrelTable = {}
+    local minions = object_manager.get_by_flag(object_t.minion)
+    for i,v in ipairs(minions) do
+        if myHeroDistTo(v:get_position()) <= qRange and v:get_name() == 'Barrel' and v:get_health == 1 then
+            table.insert(barrelTable, v)
+        end
+    end
+    return barrelTable
+end
+
+
+
+local function qLastHitPos()
+    if spellbook:get_spell_slot( spell_slot_t.q ):is_ready() then
+        for i,v in ipairs(getMinions(qRange)) do
+            if v:is_alive() and v:is_valid() then
+                if v:get_health() <= getQDamage(v) then
+                    return v:get_position()
+                end
+            end
+        end
+    end
+end
+
 local function castQ(targetPos)
     if globals.get_game_time() > Spell_limiter_q and spellbook:get_spell_slot( spell_slot_t.q ):is_ready() then
         input.send_spell(spell_slot_t.q ,targetPos)
-        --Spell_limiter_q = globals.get_game_time() + 0.5
+        Spell_limiter_q = globals.get_game_time() + 0.5
     end
 end
 
