@@ -51,9 +51,16 @@ local function castQ(targetPos)
 end
 
 local function Combo()
+    local orbwalker_target = orbwalker.get_target()
+    if orbwalker_target ~= nil then
+        local target = object_manager.get_by_index(orbwalker_target)
+        castQ(target:get_position())
+    end
 end
 
 local function Farm()
+    if qLastHit() ~= nil then
+        castQ(qLastHit())
 end
 
 local function Tick()
