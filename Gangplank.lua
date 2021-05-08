@@ -4,7 +4,7 @@ local qRange = 625
 
 local function Initialize_menu()
     Menu = {}
-    menu.label("Gangplank Q Lasthit");
+    menu.label("Gangplank");
 end
 
 local function Init()
@@ -27,13 +27,6 @@ local function getMinions(range)
     return minionsTable
 end
 
-local function getQDamage(target)
-    local myDmg = myHero:get_attack_damage()
-    local qSpell = spellbook:get_spell_slot( spell_slot_t.q )
-    local qSpellLvl = qSpell:get_level()
-    local qBase = 20
-    return ((((qSpellLvl - 1)*25) + qBase) + myDmg) * ( 100 / ( 100 + target:get_armor()))
-end
 
 local function qLastHitPos()
     if spellbook:get_spell_slot( spell_slot_t.q ) then
@@ -45,6 +38,14 @@ local function qLastHitPos()
             end
         end
     end
+end
+
+local function getQDamage(target)
+    local myDmg = myHero:get_attack_damage()
+    local qSpell = spellbook:get_spell_slot( spell_slot_t.q )
+    local qSpellLvl = qSpell:get_level()
+    local qBase = 20
+    return ((((qSpellLvl - 1)*25) + qBase) + myDmg) * ( 100 / ( 100 + target:get_armor()))
 end
 
 local function castQ(targetPos)
