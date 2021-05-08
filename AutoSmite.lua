@@ -63,11 +63,11 @@ function Smite()
     if smiteSlot:is_ready() then
         for i,v in ipairs(jgMinions) do
                 local jgPos = v:get_position()
-                if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 1100 then
+                if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 625 then
                         GetSmiteDps()
                             if v:get_health() <= smiteDPS then
-                                --input.send_spell( smiteSlot , jgPos )
-                                input.send_spell(spell_slot_t.d, jgPos)
+                                input.send_spell( smiteSlot , jgPos )
+                                --input.send_spell(spell_slot_t.d, jgPos)
                                 
                                 
                             end 
@@ -75,6 +75,11 @@ function Smite()
         end
     end
 end
+
+function SmiteChampion()
+    if smiteSlot:is_ready() then
+        
+
 --
 local function Tick()
     if input.is_key_down(16) then 
