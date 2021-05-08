@@ -66,7 +66,7 @@ function Smite()
                 if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 625 then
                         GetSmiteDps()
                             if v:get_health() <= smiteDPS then
-                                input.send_spell( spell_slot_t.q , jgPos )
+                                input.send_spell( smiteSlot , jgPos )
                                 --input.set_cursor_position(jgPos)
                                 --input.send_key_down(68)
                             end 
