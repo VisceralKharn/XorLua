@@ -12,8 +12,8 @@ local function Init()
     Initialize_menu() 
 end
 
-function myHeroDistTo(position)
-    return (myHero:get_position() - position):length()
+function distTo(first,second)
+    return (first - second):length()
 end
 
 
@@ -29,24 +29,32 @@ local function getMinions(range)
     minionsTable = {}
     local minions = object_manager.get_by_flag(object_t.minion)
         for i,v in ipairs(minions) do
-            if myHeroDistTo(v:get_position()) <= range and v:get_name() ~= 'Barrel' then
+            if distTo(myHero:get_position(),v:get_position()) <= range and v:get_name() ~= 'Barrel' then
                 table.insert(minionsTable, v)
             end
         end
     return minionsTable
 end
 
-local function getBarrels()
+local function getBarrelPos()
     barrelTable = {}
     local minions = object_manager.get_by_flag(object_t.minion)
     for i,v in ipairs(minions) do
-        if myHeroDistTo(v:get_position()) <= qRange and v:get_name() == 'Barrel' and v:get_health == 1 then
-            table.insert(barrelTable, v)
+        if distTo(myHero:get_position(),v:get_position()) <= qRange and v:get_name() == 'Barrel' and v:get_health == 1 then
+            table.insert(barrelTable, v:get_position())
         end
     end
     return barrelTable
 end
 
+local function enemyChamps()
+    enemyPositions = {}
+    local enemyTable = object_manager.get_valid_enemy_heroes()
+    for i,v in ipairs(enemyTable) do 
+        table.insert(enemyPositions,v:get_position())
+    end
+    return enemyPositions
+end
 
 
 local function qLastHitPos()
@@ -72,7 +80,7 @@ local function Combo()
     local orbwalker_target = orbwalker.get_target()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index(orbwalker_target)
-        if myHeroDistTo(target:get_position()) <= qRange then 
+        if distTo(myHero:get_position(),target:get_position()) <= qRange then 
             castQ(target:get_position())
         end
     end
