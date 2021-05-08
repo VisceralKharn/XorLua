@@ -38,13 +38,10 @@ end
 local function qLastHitPos()
     if spellbook:get_spell_slot( spell_slot_t.q ) then
         for i,v in ipairs(getMinions(qRange)) do
-            if myHeroDistTo(v:get_position()) <= qRange then
-                if v:is_alive() and v:is_valid() and getQDamage(v) ~= 'unknown' then
-                    if v:get_health() <= getQDamage(v) then
-                        return v:get_position()
-                    end
+            if v:is_alive() and v:is_valid() and getQDamage(v) ~= 'unknown' then
+                if v:get_health() <= getQDamage(v) then
+                    return v:get_position()
                 end
-
             end
         end
     end
