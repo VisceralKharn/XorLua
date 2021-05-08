@@ -26,10 +26,10 @@ local function getMinions()
 end
 
 local function getQDamage()
-    local myDmg = myHero:get_attack_damage()
+    local myDmg = myHero:get_attack_damage()   
     local qSpellLvl = qSpell:get_level()
     local qBase = 20
-    return qDamage = (((qSpellLvl - 1)*25) + qBase) + myDmg
+    return (((qSpellLvl - 1)*25) + qBase) + myDmg
 end
 
 local function qLastHit()
@@ -37,18 +37,32 @@ local function qLastHit()
         getMinions()
         for i,v in ipairs() do
             if v:is_alive() and v:is_valid() then
-                if v:get_health() <= getQDamage() then
-                    input.send_spell(qSpell,v:get_position())
-                end
+              getQDamage()
+              if v:get_health() <= getQDamage() then
+                  return v:get_position()
+              end
             end
         end
     end
 end
 
+local function castQ(targetPos)
+    input.send_spell(qSpell,targetPos)
+end
+
+local function Combo()
+end
+
+local function Farm()
+end
+
 local function Tick()
     if input.is_key_down(84) then 
-        qLastHit() 
+        Farm()
         return 
+    end
+    if input.is_key_down(32) then
+        Combo()
     end
 end
 
