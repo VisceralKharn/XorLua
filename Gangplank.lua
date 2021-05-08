@@ -12,18 +12,19 @@ local function Init()
     Initialize_menu() 
 end
 
-function MyHero_DistTo(position)
+function myHeroDistTo(position)
     return (myHero:get_position() - position):length()
 end
 
-local function getMinions()
+local function getMinions(range)
     minionsTable = {}
     local minions = object_manager.get_by_flag(object_t.minion)
         for i,v in ipairs(minions) do
-            if MyHero_DistTo(v:get_position()) <= qRange then
+            if myHeroDistTo(v:get_position()) <= range then
                 table.insert(minionsTable, v)
             end
         end
+    return minionsTable
 end
 
 local function getQDamage(target)
@@ -36,9 +37,8 @@ end
 
 local function qLastHitPos()
     if spellbook:get_spell_slot( spell_slot_t.q ) then
-        local minions = object_manager.get_by_flag(object_t.minion)
-        for i,v in ipairs(minions) do
-            if MyHero_DistTo(v:get_position()) <= qRange then
+        for i,v in ipairs(getMinions(qRange)) do
+            if myHeroDistTo(v:get_position()) <= qRange then
                 if v:is_alive() and v:is_valid() and getQDamage(v) ~= 'unknown' then
                     if v:get_health() <= getQDamage(v) then
                         return v:get_position()
@@ -61,7 +61,7 @@ local function Combo()
     local orbwalker_target = orbwalker.get_target()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index(orbwalker_target)
-        if MyHero_DistTo(target:get_position()) <= qRange then 
+        if myHeroDistTo(target:get_position()) <= qRange then 
             castQ(target:get_position())
         end
     end
