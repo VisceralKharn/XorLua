@@ -8,6 +8,7 @@ local function Init()
     myHero = object_manager:get_local()
     spellbook = myHero:get_spell_book()
     qRange = 625
+    eRadius = 325
     Initialize_menu() 
 end
 
@@ -39,14 +40,15 @@ local function getBarrelPos()
     barrelTable = {}
     local minions = object_manager.get_by_flag(object_t.minion)
     for i,v in ipairs(minions) do
-        if distTo(myHero:get_position(),v:get_position()) <= qRange and v:get_name() == 'Barrel' and v:get_health == 1 then
+        if distTo(myHero:get_position(),v:get_position()) <= qRange and v:get_name() == 'Barrel' and v:get_health() == 1 then
             table.insert(barrelTable, v:get_position())
         end
     end
     return barrelTable
 end
 
-local function enemyChamps()
+
+local function enemyChampPositions()
     enemyPositions = {}
     local enemyTable = object_manager.get_valid_enemy_heroes()
     for i,v in ipairs(enemyTable) do 
@@ -54,6 +56,19 @@ local function enemyChamps()
     end
     return enemyPositions
 end
+
+local function qBarrel()
+    if getBarrelPos() ~= nil and enemyChampPositions() ~= nil then
+        for i,b in ipairs(getBarrelPos()) do
+            for i,c in ipairs(enemyChampPositions()) do
+                if distTo(b,c) <= eRadius then
+                    return b
+                end
+            end
+        end
+    end
+end
+
 
 
 local function qLastHitPos()
@@ -79,6 +94,7 @@ local function Combo()
     local orbwalker_target = orbwalker.get_target()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index(orbwalker_target)
+        if qBarrel() ~= nil then castQ(qBarrel()) end
         if distTo(myHero:get_position(),target:get_position()) <= qRange then 
             castQ(target:get_position())
         end
