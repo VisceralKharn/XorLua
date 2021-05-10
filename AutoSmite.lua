@@ -8,6 +8,7 @@ local function Init()
     spellbook = myHero:get_spell_book()
     smiteSlot = spellbook:get_spell_slot_by_name('SummonerSmite')
     x = 2
+    smiteRange = 625
     Initialize_menu()
     
 end
@@ -35,20 +36,20 @@ local function GetSmiteDps()
     return smiteDPS
 end
 
-function  test2(str)
+local function  test2(str)
     str = string.lower(str)
     if string.match(str, "sru")  then
         return true
     end
 end
 
-function MyHero_DistTo(point)
+local function MyHero_DistTo(point)
     return (myHero:get_position() - point):length()
 end
 
 --Filter minions to jungle mobs done by Nenny
-function SmiteTargets()
-    jgMinions = {}
+local function SmiteTargets()
+    local jgMinions = {}
     local  minions = object_manager.get_by_flag(object_t.minion) 
         for i,v in ipairs(minions) do
             local buffManager = v:get_buff_manager()
@@ -56,27 +57,38 @@ function SmiteTargets()
                     table.insert(jgMinions, v)
                 end
         end 
+    return jgMinions
 end
 
-function Smite()
-    SmiteTargets()
+local function smiteMinionPos()
     if smiteSlot:is_ready() then
-        for i,v in ipairs(jgMinions) do
+        for i,v in ipairs(SmiteTargets()) do
                 local jgPos = v:get_position()
-                if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= 625 then
+                if v:is_alive() and v:is_valid() and MyHero_DistTo(jgPos) <= smiteRange then
                         GetSmiteDps()
                             if v:get_health() <= smiteDPS then
-                                input.send_spell( smiteSlot , jgPos )
-                                --input.set_cursor_position(jgPos)
-                                --input.send_key_down(68)
+                                return v:get_position() 
                             end 
                 end
         end
     end
 end
 
-function SmiteChampion()
+local function Combo()
+    local orbwalker_target = orbwalker.get_target()
+    if orbwalker_target ~= nil then
+        local target = object_manager.get_by_index(orbwalker_target)
+        if MyHero_DistTo(target:get_position()) <= smiteRange then
+            Smite(target:get_position())
+        end
+    end
+end
+
+
+
+local function Smite(targetPos)
     if smiteSlot:is_ready() then
+        input.send_spell(smiteSlot,targetPos)
     end
 end
         
@@ -84,9 +96,12 @@ end
 --
 local function Tick()
     if input.is_key_down(16) then 
-        Smite() 
+        Smite(smiteMinionPos()) 
         return 
     end
+    if input.is_key_down(32) then
+        Combo() 
+    return 
 end
 
 local function printResults()
