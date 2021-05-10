@@ -1,15 +1,10 @@
 
 local function Initialize_menu()
     Menu = {}
-    menu.label("Ziggs");
+    menu.label("Gnar");
 
     menu.label("Combo")
     Menu.combo_use_q = menu.checkbox("Use Q", true)
-    Menu.combo_mana_q = menu.slider_int( "Mana Q", 0, 100, 10)
-
-    menu.label("Mixed")
-    Menu.mixed_use_q = menu.checkbox("Use Q", true)
-    Menu.mixed_mana_q = menu.slider_int( "Mana Q", 0, 100, 10)
 
     menu.label("Draw")
     Menu.draw_q = menu.checkbox("Draw Q range", true)
@@ -35,13 +30,14 @@ local function Use_Q(target)
     end
 end
 
-
+--config.dump_vars( )
+--orbwalker_keybind:get()
 
 local function Combo()
     local orbwalker_target = orbwalker.get_target()
-    if orbwalker_target ~= -1 then
+    if orbwalker_target ~= nil then
         local target = object_manager.get_by_index( orbwalker_target )
-        if Menu.combo_use_q:get_value() and Local_hero:get_mana() > max_mana * (Menu.combo_mana_q:get_value()/100) and Local_hero:get_mana() > 40 then Use_Q(target) end
+        if Menu.combo_use_q:get_value() then Use_Q(target) end
     end
 end
 
@@ -52,15 +48,14 @@ local function Draw()
     Local_hero = object_manager.get_local()
     Local_spellbook = Local_hero:get_spell_book()
     myPosString = tostring(Local_hero:get_position())
-    -- example usage
-    --render.text( vec2:new( 100, 100 ), "im a text", 32, color:new( 255, 255, 255 ) )
-    --render.text(vec2:new( 100, 100 ), myPosString, 32, color:new( 255, 255, 255 ) )
     if Menu.draw_q:get_value() then render.circle_3d( Local_hero:get_position() , 1100, color:new( 0,125,255, 100 ) ) end
     if Local_hero:get_mana() > max_mana then max_mana = Local_hero:get_mana() return end
 end
 
 local function Tick()
-    if input.is_key_down(67) then Combo() return end
+    if input.is_key_down(32) then Combo() return end
+    if input.is_key_down(35) then print(config.get_value('orbwalker_keybind')) return end
+    --if input.is_key_down(35) then print(config.set_value('orbwalker_keybind',35)) return end
 end
 
 Init()
