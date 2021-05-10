@@ -95,7 +95,7 @@ local function Combo()
     if orbwalker_target ~= nil then
         local target = object_manager.get_by_index(orbwalker_target)
         if qBarrel() ~= nil then castQ(qBarrel()) end
-        if distTo(myHero:get_position(),target:get_position()) <= qRange then 
+        if distTo(myHero:get_position(),target:get_position()) <= qRange and getBarrelPos() == nil then 
             castQ(target:get_position())
         end
     end
