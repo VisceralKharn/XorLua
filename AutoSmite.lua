@@ -101,6 +101,7 @@ local function Tick()
     end
     if input.is_key_down(32) then
         Combo() 
+    end
     return 
 end
 
